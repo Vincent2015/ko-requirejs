@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:solr="http://www.springframework.org/schema/data/solr"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/data/solr http://www.springframework.org/schema/data/solr/spring-solr-1.0.xsd"
+       default-lazy-init="true">
+
+    <description>Spring solr公共配置</description>
+
+    <bean id="httpSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg name="baseURL" value="${solr.index.url}"></constructor-arg>
+        <property name="soTimeout" value="30000"/>
+        <property name="connectionTimeout" value="30000"/>
+    </bean>
+
+
+    <bean id="solrTemplate" class="org.springframework.data.solr.core.SolrTemplate">
+        <constructor-arg name="solrServerFactory" ref="solrServerFactory"/>
+    </bean>
+
+    <bean id="solrServerFactory" class="org.springframework.data.solr.server.support.MulticoreSolrServerFactory">
+        <property name="solrServer" ref="httpSolrServer"/>
+    </bean>
+
+    <solr:repositories base-package="uap.web.ecmgr.solr.repository" solr-server-ref="httpSolrServer"></solr:repositories>
+
+</beans>

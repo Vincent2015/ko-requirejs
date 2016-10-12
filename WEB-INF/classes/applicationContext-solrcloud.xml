@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:solr="http://www.springframework.org/schema/data/solr"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/data/solr http://www.springframework.org/schema/data/solr/spring-solr-1.0.xsd"
+       default-lazy-init="true">
+
+    <description>Spring solrcloud公共配置</description>
+
+    <bean id="cloudServer" class="org.apache.solr.client.solrj.impl.CloudSolrServer">
+        <constructor-arg name="zkHost" value="${zookeeper.connectionurl.cluster}"></constructor-arg>
+        <constructor-arg name="updatesToLeaders" value="true"></constructor-arg>
+        <property name="defaultCollection" value="emall"/>
+        <property name="zkClientTimeout" value="15000"/>
+        <property name="zkConnectTimeout" value="15000"/>
+    </bean>
+
+    <bean id="solrTemplate" class="org.springframework.data.solr.core.SolrTemplate">
+        <constructor-arg name="solrServerFactory" ref="solrServerFactory"/>
+    </bean>
+
+    <bean id="solrServerFactory" class="org.springframework.data.solr.server.support.MulticoreSolrServerFactory">
+        <property name="solrServer" ref="cloudServer"/>
+    </bean>
+
+    <solr:repositories base-package="uap.web.ecmgr.solr.repository" solr-server-ref="cloudServer"
+                       factory-class="uap.web.search.solr.repository.support.CustomSolrRepoBean"></solr:repositories>
+
+
+</beans>

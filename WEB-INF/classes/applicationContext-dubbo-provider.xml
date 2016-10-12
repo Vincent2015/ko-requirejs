@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd 
+      http://code.alibabatech.com/schema/dubbo
+      http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- dubbo 配置 -->
+    <dubbo:application name="${dubbo.application.name}"/>
+    <dubbo:registry address="${dubbo.registry.address}"/>
+    <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"/>
+
+    <dubbo:monitor protocol="registry"></dubbo:monitor>
+
+    <!-- 生产者声明 -->
+    <!-- <bean id="shopInfoDao" class="uap.web.ecmgr.repository.EmallShopInfoDao"/>  -->
+    <bean id="shopRegService" class="uap.web.ecmgr.service.shop.ShopServiceImpl"/>
+    <dubbo:service interface="uap.web.api.service.shop.ShopService"
+                   ref="shopRegService" version="0.1" retries="0" timeout="5000"
+                   loadbalance="${dubbo.service.loadbalance}"/>
+
+
+    <bean id="memberRegService" class="uap.web.ecmgr.service.account.MemberDubboService"/>
+    <dubbo:service interface="uap.web.api.service.reg.MemberService" ref="memberRegService"
+                   version="0.1" retries="0" timeout="10000" loadbalance="${dubbo.service.loadbalance}"/>
+</beans>

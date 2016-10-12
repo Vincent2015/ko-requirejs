@@ -1,0 +1,48 @@
+<div class="container-fixed" style="margin-top:20px;">
+	<div class="row">
+		<form role="form-search">
+			<div class="form-group">
+				<select data-bind="value:data().plat" style="width:80px">
+					<option value="top">淘宝</option>
+					<option value="jd">京东</option>
+					<option value="suning">苏宁</option>
+					<option value="yhd">一号店</option>
+				</select>
+				<input type="text" style="width:250px" data-bind="value:data().num_iid" placeholder="商品数字ID"/>&nbsp;&nbsp;
+				<input type="text" style="width:450px" data-bind="value:data().sellernum_iids" placeholder="卖家店铺内自定义类目ID，用逗号分隔，最多不能超过10个"/>&nbsp;&nbsp;
+				<input type="text" class="input-medium" data-bind="value:data().q" placeholder="商品名称关键字"/>&nbsp;&nbsp;
+				<button type="submit" class="btn btn-primary" data-bind="click:submitForm">&nbsp;&nbsp;筛选&nbsp;&nbsp;</button>
+			</div>
+		</form>
+	</div>
+	<!-- 列表区域  -->
+	<div class="table-responsive">
+		<table id="contentTable" class="table table-bordered table-condensed table-hover">
+			<thead>
+				<tr>
+					<th width="10%" align="center" style="text-align:center">商品数字ID</th>
+					<th width="40%" align="center" style="text-align:center">商品名称</th>
+					<th width="10%" align="center" style="text-align:center">商品价格（元）</th>
+					<th width="15%" align="center" style="text-align:center">上架时间</th>
+					<th width="10%" align="center" style="text-align:center">管理</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: content">
+				<tr>
+					<td data-bind="text:numIid"></td>
+					<td data-bind="text:title"></td>
+					<td data-bind="text:price"></td>
+					<td data-bind="text:modified"></td>
+					<td align="center">
+						<button type="button" class="btn btn-primary btn-sm active opt_button" data-bind="click:$parent.modify">修改</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+		<!-- 分页区域  -->
+	<div style="text-align: center">
+		<ul class="pagination" id="pagination" style="margin: 0px">
+		</ul>
+	</div>
+</div>

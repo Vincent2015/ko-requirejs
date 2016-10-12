@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/rabbit
+	http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd">
+ 
+	<!-- 连接服务配置  -->
+	<rabbit:connection-factory id="connectionFactory" addresses="${mq.addresses}"  username="${mq.username}" password="${mq.password}"/>
+         
+	<rabbit:admin connection-factory="connectionFactory"/>
+    
+	<!-- queue 队列声明  -->
+	<rabbit:queue id="queue_one" durable="true" auto-delete="false" exclusive="false" name="queue_one"/>
+	
+	<!-- 声明的订阅模型的queue -->
+	<rabbit:queue id="ieop-publish-subscribe" durable="true" auto-delete="false" exclusive="false" name="ieop-publish-subscribe"/>
+	<rabbit:queue id="ieop-publish-subscribe-another" durable="true" auto-delete="false" exclusive="false" name="ieop-publish-subscribe-another"/>
+    
+    <!-- 将订阅的queue绑定到exchange上 -->
+    <rabbit:fanout-exchange name="ieop-fanout-exchange" durable="true" auto-delete="false" id="fanout-exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="ieop-publish-subscribe"></rabbit:binding>
+            <rabbit:binding queue="ieop-publish-subscribe-another"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+    
+    <!-- queue litener  观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象-->
+	<rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto">
+		<rabbit:listener queues="queue_one" ref="clearCacheLitener"/>
+	</rabbit:listener-container>
+    
+    <!-- 订阅监听器监听发布消息 -->
+    <rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto">
+		<rabbit:listener queues="ieop-publish-subscribe" ref="subscribeListener"/>
+	</rabbit:listener-container>
+	
+	<rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto">
+		<rabbit:listener queues="ieop-publish-subscribe-another" ref="anotherSubscribeLitener"/>
+	</rabbit:listener-container>
+    
+	<bean id="subscribeListener" class="uap.web.mq.SubscribeLitener"></bean>
+	<bean id="anotherSubscribeLitener" class="uap.web.mq.OtherSubscribeLitener"></bean>
+	<bean id="clearCacheLitener" class="uap.web.mq.ClearCacheMqListener"></bean>
+    
+    <!-- 店铺注册queue -->
+    <rabbit:queue id="queue_shop_reg" durable="true" auto-delete="false" exclusive="false" name="queue_shop_reg"/>
+    
+    <!-- 店铺相关的direct exchange -->
+    <rabbit:direct-exchange name="exchange_shop" durable="true" auto-delete="false" id="exchange_shop">
+    	<rabbit:bindings>
+    		<rabbit:binding key="shop_reg" queue="queue_shop_reg"></rabbit:binding>
+    	</rabbit:bindings>
+    </rabbit:direct-exchange>
+    
+    <!-- 店铺注册Listener -->
+    <bean id="shopRegListener" class="uap.web.mq.ShopRegListener"/>
+    <rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto" prefetch="100" concurrency="5" max-concurrency="30">
+		<rabbit:listener queues="queue_shop_reg" ref="shopRegListener"/>
+	</rabbit:listener-container>
+	
+	<!-- 购物车 fanout exchange -->
+    <rabbit:fanout-exchange name="exchange_shop_cart" durable="true" auto-delete="false" id="exchange_shop_cart">
+        <rabbit:bindings>
+            <rabbit:binding queue="ieop-publish-subscribe"></rabbit:binding>
+            <rabbit:binding queue="ieop-publish-subscribe-another"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+</beans>

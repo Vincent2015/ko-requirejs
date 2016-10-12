@@ -1,0 +1,58 @@
+<style type="text/css">
+
+.requiredstar{
+  color: #e02222;
+ }
+</style>
+<div class="container-fluid" style="margin-top: 40px;">
+	<div class="row">
+		<form class="form-horizontal" role="form" style="width: 80%">
+			<input type="hidden" id="data.id" data-bind="value:data().id">
+			<div class="form-group">
+				<label for="name" class="col-sm-2 control-label"><span class="requiredstar">* </span>名称</label>
+				<div class="col-sm-10">
+					<input type="text" required null-msg="不能为空" class="form-control" id="name" placeholder="输入名称" data-bind="value:data().name">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="href" class="col-sm-2 control-label">图片</label>
+				<div class="col-sm-10">
+					<div>
+						<img class="img-responsive" data-bind="attr:{src:data().href}" />
+					</div>
+					<span class="btn btn-success fileinput-button up" > 
+						<i class="glyphicon glyphicon-plus ">上传图片</i> 
+					</span>
+<!--
+					<span class="btn btn-success fileinput-button"> 				
+						<i class="glyphicon glyphicon-plus"></i> 
+						<span>涓婁紶鍥剧墖</span> 
+						<input id="fileupload" type="file" name="files[]" multiple>
+					</span>
+-->
+
+<!--
+					<div id="progress" class="progress">
+						<div class="progress-bar progress-bar-success"></div>
+					</div>
+-->
+
+					<input type="hidden" class="form-control" id="href" placeholder="上传图片" data-bind="value:data().href">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="adorder" class="col-sm-2 control-label"><span class="requiredstar">* </span>顺序</label>
+				<div class="col-sm-10">
+					<input type="text" required valid-type="integer" error-msg="请输入数字" null-msg="不能为空" class="form-control" id="adorder" placeholder="图片顺序" data-bind="value:data().adorder"> </input>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-primary" data-bind="click:submitForm">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>
+					<button type="button" class="btn btn-primary" data-bind="click:function(){window.history.go(-1)}">&nbsp;&nbsp;返回&nbsp;&nbsp;</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,61 @@
+<div class="container-fixed">
+	<div class="row" style="margin-bottom: 10px;">
+		<div class="ec-menu col-xs-8 col-md-8">
+			<div style="text-align: left;">
+				<button type="button" class="btn btn-primary btn-lg active" data-bind="click:add">&nbsp;&nbsp;新增商品&nbsp;&nbsp;</button>
+				<button type="button" class="btn btn-primary btn-lg active" data-bind="click:delBatch">&nbsp;&nbsp;删除&nbsp;&nbsp;</button>
+				<!-- <button type="button" class="btn btn-primary btn-lg active" data-bind="click:redisShardedDemo">&nbsp;&nbsp;redis分片测试&nbsp;&nbsp;</button> -->
+			</div>
+		</div>
+		<div class="ec-search col-xs-4 col-md-4">
+			<div style="text-align: right;">
+				<form class="form-search" action="#">
+					<input type="text" name="search_LIKE_title" class="input_search input-medium" data-bind="value:searchText"  placeholder="名称"/>&nbsp;&nbsp;
+					<select class="input_search input-medium"  name="search_LIKE_goodsStatus" >
+					<option value="">--发布状态--</option>
+					<option value="on_sale">上架商品</option>
+					<option value="delete">下架商品</option>
+					<option value="on_depot">在库商品</option>
+					<option value="on_history">过期商品</option>
+					<option value="temp_storage">临时库存</option>
+					</select>
+					<button type="submit" class="btn" id="search_btn" data-bind="click: searchPage">搜索</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- 列表区域  -->
+	<div class="table-responsive">
+		<table id="contentTable" class="table table-bordered table-condensed table-hover">
+			<thead>
+				<tr>
+				    <th > <input type="checkbox" id="markedAll"  name="markedAll" data-bind="click:selectAll()"  />  </th>
+					<th width="20%">类型编码</th>
+					<th width="25%">名称</th>
+					<th width="10%">品牌编号</th>
+					<th width="10%">状态</th>
+					<th width="20%">图片</th>
+					<th width="25%">操作</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: data.content">
+				<tr>
+				    <td> <input type="checkbox" name="marked" data-bind="value:id,attr:{title:id}" onclick="viewModel.selectSingle()"  /> </td>
+					<td data-bind="text:catCode"></td>
+					<td><strong><a href="#" data-bind="text:title,attr: {href: '#/emall/goods/goodinfo/' + id }"></a></strong></td>
+					<td data-bind="text:brandId"></td>
+					<td data-bind="text:cstatus"></td>
+					<td data-bind="text:imgLarge" style ="word-break:break-all"></td>
+					<td><strong> <a href="#" data-bind="click: $parent.del">删除</a> <a href="#" data-bind="click: $parent.recommend">推荐</a>
+					      <a href="#" data-bind="click: $parent.createStaticHtml">静态页</a>
+					</strong></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 分页区域  -->
+	<div style="text-align: center">
+		<ul class="pagination" id="pagination" style="margin: 0px">
+		</ul>
+	</div>
+</div>

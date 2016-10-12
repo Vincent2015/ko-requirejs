@@ -1,0 +1,141 @@
+<style type="text/css">
+/*.tooltip-inner{*/
+	/*position: relative;*/
+    /*left: 83%;*/
+    /*top: 34px;*/
+    /*max-width: 127px;*/
+/*}*/
+.requiredstar{
+  color: #e02222;
+ }
+</style>
+<div class="container-fluid" style="margin-top: 40px;">
+	<div class="row">
+		<form class="form-horizontal" role="form" style="width: 80%">
+			<input type="hidden" id="good.id" data-bind="value:good().id">
+			<div class="form-group">
+				<label for="catCode" class="col-sm-2 control-label"><span class="requiredstar">* </span>类型编码</label>
+				<div class="col-sm-10">
+					<select required null-msg="不能为空" class="form-control" id="good.catCode" data-bind="value:good().catCode">
+					<option value="004.004.001">布艺沙发</option>
+					<option value="004.004.002">皮沙发</option>
+					<option value="004.001.001">布艺床</option>
+					<option value="004.001.002">皮床</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label"><span class="requiredstar">* </span>名称</label>
+				<div class="col-sm-10">
+					<input type="text" required null-msg="不能为空"  class="form-control" id="title"
+						placeholder="请输入商品名称" data-bind="value:good().title">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="brandId" class="col-sm-2 control-label"><span class="requiredstar">* </span>品牌</label>
+				<div class="col-sm-10">
+					<select required null-msg="不能为空" class="form-control" id="brandId" data-bind="value:good().brandId">
+					<option value="41">国安佳美</option>
+					<option value="74">爱依瑞斯</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="goodsDesc" class="col-sm-2 control-label">描述</label>
+				<div class="col-sm-10">
+					<textarea type="text" class="form-control" id="goodsDesc"
+						placeholder="商品描述" rows="5" data-bind="value:good().goodsDesc">
+					</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="imgLarge" class="col-sm-2 control-label">图片：</label>
+				<div class="col-sm-10">
+					<div style="border: 0px solid #000;">
+						<img class="img-responsive" data-bind="attr:{src:good().imgLarge}" />
+					</div>
+					<div class="up" style="display: inline-block;">
+					<span class="btn btn-success fileinput-button"> <i class="glyphicon glyphicon-plus"></i> 
+					<span>上传图片</span> 
+						<input id="fileupload" type="file" name="files[]" multiple>
+					</span>
+					</div>
+<!--
+					<div id="progress" class="progress">
+						<div class="progress-bar progress-bar-success"></div>
+					</div>-->
+
+					<input type="hidden" class="form-control" id="imgLarge" placeholder="上传图片" data-bind="value:good().imgLarge">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="marketPrice" class="col-sm-2 control-label"><span class="requiredstar">* </span>市场价</label>
+				<div class="col-sm-10">
+					<input type="text" required valid-type="integer" error-msg="请输入数字" null-msg="不能为空" class="form-control" id="marketPrice"
+						placeholder="请输入商品市场价" data-bind="value:good().marketPrice">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="goodsNumber" class="col-sm-2 control-label"><span class="requiredstar">* </span>商品数量</label>
+				<div class="col-sm-10">
+					<input type="text" required valid-type="integer" error-msg="请输入数字" null-msg="不能为空" class="form-control" id="goodsNumber"
+						placeholder="商品数量" data-bind="value:good().goodsNumber">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="goodsPrice" class="col-sm-2 control-label"><span class="requiredstar">* </span>商品价格</label>
+				<div class="col-sm-10">
+					<input type="text" required valid-type="integer" error-msg="请输入数字" null-msg="不能为空" class="form-control" id="goodsPrice"
+						placeholder="商品价格" data-bind="value:good().goodsPrice">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="goodsRank" class="col-sm-2 control-label"><span class="requiredstar">* </span>商品等级</label>
+				<div class="col-sm-10">
+					<input type="text" required valid-type="integer" error-msg="请输入数字" null-msg="不能为空" class="form-control" id="goodsRank"
+						placeholder="商品等级" data-bind="value:good().goodsRank">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="goodsStatus" class="col-sm-2 control-label"><span class="requiredstar">* </span>商品信息</label>
+				<div class="col-sm-10">
+					<select required null-msg="不能为空" class="form-control" id="goodsStatus" data-bind="value:good().goodsStatus">
+					<option value="on_sale">上架商品</option>
+					<option value="delete">下架商品</option>
+					<option value="on_depot">在库商品</option>
+					<option value="on_history">过期商品</option>
+					<option value="temp_storage">临时库存</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="saleNumber" class="col-sm-2 control-label">卖出数量</label>
+				<div class="col-sm-10">
+					<input type="text" valid-type="integer" error-msg="请输入数字" class="form-control" id="saleNumber"
+						placeholder="请输入商品售出数量" data-bind="value:good().saleNumber">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="sendFlag" class="col-sm-2 control-label"><span class="requiredstar">* </span>发送标志</label>
+				<div class="col-sm-10">
+					<input type="radio" name="sendFlag"  value='1' data-bind="checked:good().sendFlag"/>已发送
+					<input type="radio" name="sendFlag"  value='0' data-bind="checked:good().sendFlag"/>未发送
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="shopId" class="col-sm-2 control-label"><span class="requiredstar">* </span>商店编号</label>
+				<div class="col-sm-10">
+					<select required null-msg="不能为空" class="form-control" id="shopId" data-bind="value:good().shopId">
+					<option value="1167">国安佳美</option>
+					<option value="1123">爱依瑞斯</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-primary" data-bind="click:submitForm">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
